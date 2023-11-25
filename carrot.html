@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Ace Theme dosyaları -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/theme-tomorrow.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/theme-twilight.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <!-- Ace Files JS,CSS,HTML -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-html.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-javascript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-css.js"></script>
+
+   <!-- Store.JS Files -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/store.js/2.0.12/store.everything.min.js"></script>
+
+   <!-- Bootstrap Icons -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   
+   <style>
+    
+        body {
+      overflow: hidden;
+    }
+
+#editor {
+outline:none;   
+}
+.logo {
+width:20%;
+height:20%;   
+}
+
+
+</style>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Carrot - HTML Editor</title>
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto p-4">
+    <!-- Navbar -->
+    <nav class="flex items-center justify-between bg-blue-500 p-4 border rounded-md">
+        <!-- Logo and Buttons -->
+        <div class="flex items-center space-x-4">
+            <!-- Logo -->
+            <img class="logo" src="Carrotlogow1.png">
+            <!-- Buttons -->
+            <div class="space-x-4">
+                <button class="text-xl text-white transition delay-120 hover:text-indigo-900">Download</button>
+                <button class="text-xl text-white transition delay-120 hover:text-indigo-900">Scratch</button>
+                <button class="text-xl text-white transition delay-120 hover:text-indigo-900">Github</button>
+                <a href="http://oylarersine.rf.gd/whycarrot"><button class="text-lg text-white transition delay-120 hover:text-indigo-900">Why Carrot?</button></a>
+            </div>
+
+            
+        </div>
+    </nav>
+
+    <!-- Container -->
+    <div class="mt-4">
+        <!-- Text Editor Area -->
+        <div id="editor"  style="height: 400px; width: 100%;"></div>
+        <br>
+<hr>
+        <!-- Buttons -->
+        <div class="mt-2">
+            <button onclick="run()" class="bg-blue-500 text-white px-4 py-2 transition delay-120 hover:bg-blue-700 rounded-md">Run</button>
+            <button onclick="get()" class="bg-green-600 text-white px-4 py-2 transition delay-120 hover:bg-green-700 rounded-md ml-2">Save</button>
+            <button onclick="loadFileContent()" class="bg-red-600 text-white px-4 py-2 transition delay-120 hover:bg-red-700 rounded-md ml-2">Read File</button>
+             <input type="file"  id="fileInput" name="fileInput" class="mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+        </div>
+        
+    </div> <br>
+     <div>
+
+    <p class="text-center text-base text-gray-500 transition delay-120 hover:text-orange-500"> Carrot Editor 2023 </p>
+</div>
+<script>
+ var codeTextarea = ace.edit("editor");
+    codeTextarea.setTheme("ace/theme/tomorrow"); // You can change the theme
+    codeTextarea.getSession().setMode("ace/mode/html"); 
+
+  // Upload last content
+    var storedContent = store.get('aceEditorContent');
+    if (storedContent) {
+      codeTextarea.setValue(storedContent);
+    }
+
+    // Keep the content when it change
+    codeTextarea.getSession().on('change', function() {
+      store.set('aceEditorContent', codeTextarea.getValue());
+     });
+
+function get() {
+		 saved =1;
+         const link = document.createElement("a");
+         const content = codeTextarea.getValue() + "<!-- Made with Carrot - HTML Editor 2023 -->" ;  
+         const file = new Blob([content], { type: 'text/plain' });
+         link.href = URL.createObjectURL(file);
+         link.download = "mycarrot.html";
+         link.click();
+         URL.revokeObjectURL(link.href);
+		 
+
+}
+
+  // Anime.js animation function
+  function animateLogo() {
+    anime({
+      targets: '.logo',
+      duration: 1000,
+      loop: false,
+      easing: 'easeInOutQuad',
+    });
+  }
+
+  // Call the animation function when the document is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    animateLogo();
+  });
+
+
+function run() {
+var preview= window.open("http://oylarersine.rf.gd/preview.html");
+preview.document.write (codeTextarea.getValue()); 
+preview.document.close(); 
+preview.focus();
+}
+
+function loadFileContent() {
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var fileContent = e.target.result;
+          codeTextarea.setValue(fileContent);
+        };
+
+        reader.readAsText(file);
+      } else {
+        alert("Please select a file.");
+      }
+    }
+
+</script>
+</body>
+</html>
+<!-- Made with Carrot - HTML Editor 2023 -->
